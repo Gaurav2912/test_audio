@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function playAudio() {
+            $.get("/play/{{ filename }}", function(data) {
+                console.log(data.status);
+            });
+        }
+
+        function stopAudio() {
+            $.get("/stop", function(data) {
+                console.log(data.status);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>WAV Player</h1>
+    <button onclick="playAudio()">Play</button>
+    <button onclick="stopAudio()">Stop</button>
+    <br>
+    <a href="/">Upload another file</a>
+</body>
+</html>
