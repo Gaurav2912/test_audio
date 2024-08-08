@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Music Player</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f2f2f2;
+    }
+
+    #player {
+      margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Music Player</h1>
+  <div id="player">
+    <input type="file" id="music-file" accept="audio/wav">
+    <button id="play-button">Start</button>
+    <button id="stop-button">Stop</button>
+    <audio id="audio-player" controls>
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+
+  <script>
+    const musicFile = document.getElementById('music-file');
+    const playButton = document.getElementById('play-button');
+    const stopButton = document.getElementById('stop-button');
+    const audioPlayer = document.getElementById('audio-player');
+
+    // Remove the default controls
+    audioPlayer.removeAttribute('controls');
+
+    // Add custom controls
+    playButton.addEventListener('click', function() {
+      audioPlayer.currentTime = 0;
+      audioPlayer.play();
+    });
+
+    stopButton.addEventListener('click', function() {
+      audioPlayer.pause();
+      audioPlayer.currentTime = 0;
+    });
+
+    musicFile.addEventListener('change', function() {
+      const file = this.files[0];
+      const source = document.createElement('source');
+      source.src = URL.createObjectURL(file);
+      source.type = 'audio/wav';
+      audioPlayer.appendChild(source);
+      audioPlayer.play();
+    });
+  </script>
+</body>
+</html>
