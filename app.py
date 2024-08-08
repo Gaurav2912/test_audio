@@ -1,6 +1,5 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, send_from_directory
 import os
-import pygame
 
 app = Flask(__name__)
 
@@ -9,8 +8,6 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-pygame.mixer.init()
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
@@ -27,19 +24,9 @@ def upload_file():
             return render_template('player.html', filename=filename)
     return render_template('upload.html')
 
-@app.route('/play/<filename>')
-def play_file(filename):
-    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    if os.path.exists(filepath):
-        pygame.mixer.music.load(filepath)
-        pygame.mixer.music.play()
-        return jsonify({"status": "playing"})
-    return jsonify({"status": "file not found"})
-
-@app.route('/stop')
-def stop_file():
-    pygame.mixer.music.stop()
-    return jsonify({"status": "stopped"})
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == '__main__':
     app.run(debug=True)
